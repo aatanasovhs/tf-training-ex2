@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  install:
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    runtime-versions:
+      docker: 18
+      # name: version
+  pre_build:
+    commands:
+      - echo "Get Current Account ID"
+      #- src_account_id=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
+      #- echo "Logging in to the pre_build Amazon ECR in ..."
+      #- $(aws ecr get-login --no-include-email --registry-ids ${src_account_id} --region ${region})
+  build:
+    commands:
+      #- bash -c "if [ \"$RC\" -gt \"0\" ]; then exit 1; fi"
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
+      #- cd ${pipelines_source_path}/${pipeline_name}
+      #- docker build -t ${os_type}-${app_type} . | tee /tmp/build.log
+      #- CURRENTTIME=$(date +%Y%m%d%H%M%S)
+      #- docker tag ${os_type}-${app_type}:latest ${ecr_url}:${CURRENTTIME}
+      #- echo ${CURRENTTIME} > /tmp/timetag.log
+  post_build:
+    commands:
+      #- bash -c "if [ \"$CODEBUILD_BUILD_SUCCEEDING\" == \"0\" ]; then exit 1; fi"
+      - echo "build completed on `date`"
+      - echo "Pushing the Docker image..."
+      #- docker push ${ecr_url}:latest | tee /tmp/push.log
+      #- docker push ${ecr_url}:${CURRENTTIME} | tee /tmp/push.log
+artifacts:
+  files:
+    #- /tmp/build.log
+    #- /tmp/push.log
+    #- /tmp/timetag.log
+  discard-paths: yes
